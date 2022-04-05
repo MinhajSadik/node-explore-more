@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/MinhajSadik/node-explore-more#readme",
   "devDependencies": {
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.15"
   }
 }
