@@ -1,8 +1,8 @@
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const EventEmitter = require("events");
-
+// const EventEmitter = require("events");
+const Periods = require("./external");
 //path module
 // const myPath =
 //   "/Users/minhajsadik/Documents/All-Projects/node-explore-more/index.js";
@@ -20,13 +20,14 @@ const EventEmitter = require("events");
 
 //fs module
 // fs.writeFile("notes.txt", "This is my first note, ");
-fs.writeFile("notes.txt", "This is my first note, ", (err) => {
+const datas = fs.writeFile("notes.txt", "This is my first note, ", (err) => {
   if (err) {
     console.log("Unable to write file");
   } else {
     console.log("File written successfully");
   }
 });
+console.log(datas);
 // // fs.writeFileSync("notes.txt", "This is my note 2"); //this will overwrite the previous note
 
 // fs.appendFile("notes.txt", "This is my note 2 appended");
@@ -42,13 +43,18 @@ fs.readFile("notes.txt", "utf8", (err, data) => {
 console.log("After reading the file");
 
 //EventEmitter module
-
-const emitter = new EventEmitter();
+// const emitter = new EventEmitter();
 
 //register a listener for the event "message"
-emitter.on("event", () => {
-  console.log("Event Fired");
+// emitter.on("periodStarted", ({ period, text }) => {
+//   console.log(`Event Fired Period Starting ${period} ${text}`);
+// });
+
+const period = new Periods();
+period.on("periodEvent", ({ period, text }) => {
+  console.log(`Event Fired for Period Start ${period} ${text}`);
 });
+period.startPeriod();
 
 //emit the event "message" it means raise the event
-emitter.emit("event");
+// emitter.emit("event");
