@@ -20,6 +20,13 @@ const EventEmitter = require("events");
 
 //fs module
 // fs.writeFile("notes.txt", "This is my first note, ");
+fs.writeFile("notes.txt", "This is my first note, ", (err) => {
+  if (err) {
+    console.log("Unable to write file");
+  } else {
+    console.log("File written successfully");
+  }
+});
 // // fs.writeFileSync("notes.txt", "This is my note 2"); //this will overwrite the previous note
 
 // fs.appendFile("notes.txt", "This is my note 2 appended");
@@ -35,6 +42,7 @@ fs.readFile("notes.txt", "utf8", (err, data) => {
 console.log("After reading the file");
 
 //EventEmitter module
+
 const emitter = new EventEmitter();
 
 //register a listener for the event "message"
