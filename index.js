@@ -20,14 +20,14 @@ const Periods = require("./external");
 
 //fs module
 // fs.writeFile("notes.txt", "This is my first note, ");
-const datas = fs.writeFile("notes.txt", "This is my first note, ", (err) => {
+fs.writeFile("notes.txt", "This is my first note, ", (err) => {
   if (err) {
     console.log("Unable to write file");
   } else {
     console.log("File written successfully");
   }
 });
-console.log(datas);
+
 // // fs.writeFileSync("notes.txt", "This is my note 2"); //this will overwrite the previous note
 
 // fs.appendFile("notes.txt", "This is my note 2 appended");
