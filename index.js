@@ -1,8 +1,10 @@
-const people = require("./people");
 const lodash = require("lodash");
+const path = require("path");
 
-console.log(lodash.last(people.people));
+const myPath =
+  "/Users/minhajsadik/Documents/All-Projects/node-explore-more/index.js";
 
-console.log(people.people);
-console.log(people.a);
-people.printName("SharMinaj");
+console.log(path.dirname(myPath));
+console.log(path.dirname(myPath));
+console.log(path.extname(myPath));
+console.log(path.parse(myPath));
