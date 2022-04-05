@@ -50,6 +50,7 @@ console.log("After reading the file");
 //   console.log(`Event Fired Period Starting ${period} ${text}`);
 // });
 
+// which Object created for emiting same object need for listening this event otherwise it won't works recognized
 const period = new Periods();
 period.on("periodEvent", ({ period, text }) => {
   console.log(`Event Fired for Period Start ${period} ${text}`);
