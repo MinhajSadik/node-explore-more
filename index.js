@@ -1,7 +1,7 @@
-const lodash = require("lodash");
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
+const EventEmitter = require("events");
 
 //path module
 // const myPath =
@@ -33,3 +33,14 @@ fs.readFile("notes.txt", "utf8", (err, data) => {
 });
 
 console.log("After reading the file");
+
+//EventEmitter module
+const emitter = new EventEmitter();
+
+//register a listener for the event "message"
+emitter.on("event", () => {
+  console.log("Event Fired");
+});
+
+//emit the event "message" it means raise the event
+emitter.emit("event");
