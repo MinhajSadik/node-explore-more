@@ -61,8 +61,11 @@ const { chunk } = require("lodash");
 //emit the event "message" it means raise the event
 // emitter.emit("event");
 
-const ourReadStreem = fs.createReadStream(`${__dirname}/notes.txt`, "utf-8");
+const ourReadStreem = fs.createReadStream(`${__dirname}/notes.txt`, "utf8");
+const ourWriteStreem = fs.createWriteStream(`${__dirname}/output.txt`, "utf8");
 
-ourReadStreem.on("data", (data) => {
-  console.log(data);
-});
+// ourReadStreem.on("data", (chunk) => {
+//   ourWriteStreem.write(chunk);
+// });
+
+// ourReadStreem.pipe(ourWriteStreem);
