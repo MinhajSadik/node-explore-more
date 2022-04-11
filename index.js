@@ -1,13 +1,18 @@
+const http = require("http");
 const fs = require("fs");
 
-const ourReadStreem = fs.createReadStream(
-  `${__dirname}/Core/output.txt`,
-  "utf8"
-);
-const ourWriteStreem = fs.createWriteStream(`${__dirname}/output.txt`, "utf8");
-
-ourReadStreem.on("data", (chunk) => {
-  ourWriteStreem.write(chunk);
+const server = http.createServer((req, res) => {
+  const myReadStream = fs.createReadStream(
+    __dirname + "/Core/output.txt",
+    "utf8"
+  );
+  myReadStream.pipe(res);
 });
 
-console.log("hello");
+// server.on("connection", (socket) => {
+//   console.log("New connection");
+// });
+
+server.listen(3000, () => {
+  console.log("Server is listening on port 3000");
+});

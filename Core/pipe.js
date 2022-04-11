@@ -6,8 +6,10 @@ const ourReadStreem = fs.createReadStream(
 );
 const ourWriteStreem = fs.createWriteStream(`${__dirname}/output.txt`, "utf8");
 
-ourReadStreem.on("data", (chunk) => {
-  ourWriteStreem.write(chunk);
-});
+// ourReadStreem.on("data", (chunk) => {
+//   ourWriteStreem.write(chunk);
+// });
+
+ourReadStreem.pipe(ourWriteStreem); // same things using pipe method
 
 console.log("hello");
