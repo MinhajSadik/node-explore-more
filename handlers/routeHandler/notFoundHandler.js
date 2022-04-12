@@ -8,9 +8,12 @@
 // Dependencies
 const handler = {};
 
-handler.notFoundHandler = () => {
+handler.notFoundHandler = (requestProperties, callback) => {
+  console.log("requestProperties", requestProperties);
   // response handling
-  console.log("Not Found");
+  callback(404, {
+    message: "Your requested url wasn't found",
+  });
 };
 
 module.exports = handler;

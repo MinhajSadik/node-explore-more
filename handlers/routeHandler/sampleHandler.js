@@ -8,9 +8,12 @@
 // Dependencies
 const handler = {};
 
-handler.sampleHandler = () => {
+handler.sampleHandler = (requestProperties, callback) => {
+  console.log("requestProperties", requestProperties);
   // response handling
-  console.log("Hello World");
+  callback(200, {
+    message: "This is a sample url",
+  });
 };
 
 module.exports = handler;
