@@ -10,7 +10,7 @@ const math = {};
 
 math.getRandomNumber = function getRandomNumber(min, max) {
   let minimum = min;
-  let maxValue = max;
+  let maximum = max;
   minimum = typeof minimum === "number" ? minimum : 0;
   maximum = typeof maximum === "number" ? maximum : 0;
   return Math.floor(Math.random() * (maximum - minimum + 1) + min);
