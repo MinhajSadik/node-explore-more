@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "main": "nodemon index",
-    "http": "Core/http",
-    "external": "/Core/external.js"
+    "main": "nodemon index"
   },
   "repository": {
     "type": "git",
