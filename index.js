@@ -9,8 +9,16 @@
 const http = require("http");
 const { handleReqRes } = require("./helpers/handleReqRes");
 const enviroment = require("./helpers/enviroment");
+const data = require("./library/data");
+
 // app object - module scaffolding
 const app = {};
+
+//testing file system
+// @TODO - remove this
+data.read("test", "newFile", (err, data) => {
+  console.log(err, data);
+});
 
 // // config object
 // app.config = {
