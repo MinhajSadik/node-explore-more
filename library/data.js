@@ -52,34 +52,35 @@ lib.read = (dir, file, callback) => {
 
 //update data in the file
 lib.update = (dir, file, data, callback) => {
-    //file open for writing
-    fs.open(`${lib.baseDir}${dir}/${file}.json`, "r+", (err, fileDescriptor) => {
-       if(!err && fileDescriptor){
-           //convert data from string to json
-           const stringData = JSON.stringify(data);
+  //file open for writing
+  fs.open(`${lib.baseDir}${dir}/${file}.json`, "r+", (err, fileDescriptor) => {
+    if (!err && fileDescriptor) {
+      //convert data from string to json
+      const stringData = JSON.stringify(data);
 
-           fs.truncate(fileDescriptor, (err) => {
-               if(!err){
-                   //write to file and close it
+      fs.truncate(fileDescriptor, (err) => {
+        if (!err) {
+          //write to file and close it
 
-                   fs.writeFile(fileDescriptor, stringData, (err) => {
-                       fs.close(fileDescriptor,(err) => {
-                          if(!err){
-                              callback(false);
-                          }else{
-                                callback("Error closing the file");
-                          }
-                       })
-                   })
-
-               }else{
-                 callback("Error truncating file");
-               }
-           })
-       } else {
-           console.log("Error: could not open file for updating, it may not exist yet");
-       }
+          fs.writeFile(fileDescriptor, stringData, (err) => {
+            fs.close(fileDescriptor, (err) => {
+              if (!err) {
+                callback(false);
+              } else {
+                callback("Error closing the file");
+              }
+            });
+          });
+        } else {
+          callback("Error truncating file");
+        }
+      });
+    } else {
+      console.log(
+        "Error: could not open file for updating, it may not exist yet"
+      );
     }
-}
+  });
+};
 
 module.exports = lib;
