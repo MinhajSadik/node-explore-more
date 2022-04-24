@@ -50,7 +50,7 @@ lib.read = (dir, file, callback) => {
   });
 };
 
-//update data in the file
+//update exising file
 lib.update = (dir, file, data, callback) => {
   //file open for writing
   fs.open(`${lib.baseDir}${dir}/${file}.json`, "r+", (err, fileDescriptor) => {
