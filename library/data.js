@@ -58,10 +58,10 @@ lib.update = (dir, file, data, callback) => {
       //convert data from string to json
       const stringData = JSON.stringify(data);
 
-      fs.truncate(fileDescriptor, (err) => {
+      //truncate the file
+      fs.ftruncate(fileDescriptor, (err) => {
         if (!err) {
           //write to file and close it
-
           fs.writeFile(fileDescriptor, stringData, (err) => {
             fs.close(fileDescriptor, (err) => {
               if (!err) {
@@ -79,6 +79,18 @@ lib.update = (dir, file, data, callback) => {
       console.log(
         "Error: could not open file for updating, it may not exist yet"
       );
+    }
+  });
+};
+
+//delete file
+lib.delete = (dir, file, callback) => {
+  //unlink the file
+  fs.unlink(`${lib.baseDir}${dir}/${file}.json`, (err) => {
+    if (!err) {
+      callback(false);
+    } else {
+      callback("Error deleting file");
     }
   });
 };

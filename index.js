@@ -16,7 +16,7 @@ const app = {};
 
 //testing file system
 // @TODO - remove this
-data.read("test", "newFile", (err, data) => {
+data.delete("test", "newFile", (err, data) => {
   console.log(err, data);
 });
 
