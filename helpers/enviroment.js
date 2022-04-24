@@ -11,11 +11,13 @@ const envirotments = {};
 envirotments.staging = {
   httpPort: 3000,
   envName: "staging",
+  secretKey: "sadlfjlsadfjlkjlaskdf",
 };
 
 envirotments.production = {
   httpPort: 3001,
   envName: "production",
+  secretKey: "ewrsadfklasdfjlkjasdfljasdf",
 };
 
 //deternmine which enviroment was passed as a command line argument
