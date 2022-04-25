@@ -20,7 +20,7 @@ handler.userHandler = (requestProperties, callback) => {
   } else {
     // response handling
     callback(405, {
-      message: "This is a user url",
+      message: "Method not allowed",
     });
   }
 };

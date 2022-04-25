@@ -19,9 +19,8 @@ handler.tokenHandler = (requestProperties, callback) => {
   if (acceptedMethods.indexOf(requestProperties.method) > -1) {
     handler._token[requestProperties.method](requestProperties, callback);
   } else {
-    // response handling
     callback(405, {
-      message: "This is a user url",
+      message: "Method not allowed",
     });
   }
 };
@@ -74,7 +73,31 @@ handler._token.post = (requestProperties, callback) => {
   }
 };
 
-handler._token.get = (requestProperties, callback) => {};
+handler._token.get = (requestProperties, callback) => {
+  //check the id if valid
+  const id =
+    typeof requestProperties.queryStringObject.id === "string" &&
+    requestProperties.queryStringObject.id.trim().length === 20
+      ? requestProperties.queryStringObject.id
+      : false;
+
+  if (id) {
+    data.read("tokens", id, (err, tokenData) => {
+      const token = { ...parseJSON(tokenData) };
+      if (!err && token) {
+        callback(200, parseJSON(tokenData));
+      } else {
+        callback(404, {
+          errorMsg: "Token not found",
+        });
+      }
+    });
+  } else {
+    callback(400, {
+      errorMsg: "You've a problem in your request",
+    });
+  }
+};
 
 //@TODO: add token handler
 handler._token.put = (requestProperties, callback) => {};
