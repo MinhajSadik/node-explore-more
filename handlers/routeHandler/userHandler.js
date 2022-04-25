@@ -93,6 +93,7 @@ handler._users.post = (requestProperties, callback) => {
   }
 };
 
+//@TODO: authentication
 handler._users.get = (requestProperties, callback) => {
   //check the phone number is valid
   const phone =
@@ -121,6 +122,7 @@ handler._users.get = (requestProperties, callback) => {
   }
 };
 
+//@TODO: authentication
 handler._users.put = (requestProperties, callback) => {
   const phone =
     typeof requestProperties.body.phone === "string" &&
@@ -191,6 +193,7 @@ handler._users.put = (requestProperties, callback) => {
   }
 };
 
+//@TODO: authentication
 handler._users.delete = (requestProperties, callback) => {
   // check the phone number is valid
   const phone =
