@@ -8,24 +8,23 @@
 // Dependencies
 const data = require("../../library/data");
 const { hash } = require("../../helpers/utilities");
-const { parseJSON } = require("../../helpers/utilities");
 const { createRandomString } = require("../../helpers/utilities");
+const { parseJSON } = require("../../helpers/utilities");
 
 //module scaffolding
 const handler = {};
 
 handler.tokenHandler = (requestProperties, callback) => {
-  const acceptedMethods = ["post", "get", "put", "delete"];
+  const acceptedMethods = ["get", "post", "put", "delete"];
   if (acceptedMethods.indexOf(requestProperties.method) > -1) {
     handler._token[requestProperties.method](requestProperties, callback);
   } else {
-    callback(405, {
-      message: "Method not allowed",
-    });
+    callback(405);
   }
 };
 
 handler._token = {};
+
 //@TODO: add token handler
 handler._token.post = (requestProperties, callback) => {
   const phone =
@@ -88,7 +87,7 @@ handler._token.get = (requestProperties, callback) => {
         callback(200, token);
       } else {
         callback(404, {
-          error: "Requested token was not found!",
+          error: "Token was not found!",
         });
       }
     });
