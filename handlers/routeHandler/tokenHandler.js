@@ -26,6 +26,7 @@ handler.tokenHandler = (requestProperties, callback) => {
 handler._token = {};
 
 //@TODO: add token handler
+//post worked successfully
 handler._token.post = (requestProperties, callback) => {
   const phone =
     typeof requestProperties.body.phone === "string" &&
@@ -71,7 +72,8 @@ handler._token.post = (requestProperties, callback) => {
     });
   }
 };
-
+//@TODO: add token handler
+//get method isn't working successfully got false from if block
 handler._token.get = (requestProperties, callback) => {
   // check the id if valid
   const id =
@@ -79,6 +81,8 @@ handler._token.get = (requestProperties, callback) => {
     requestProperties.queryStringObject.id.trim().length === 20
       ? requestProperties.queryStringObject.id
       : false;
+
+  //got false from if block
   if (id) {
     // lookup the token
     data.read("tokens", id, (err, tokenData) => {
@@ -99,18 +103,21 @@ handler._token.get = (requestProperties, callback) => {
 };
 
 //@TODO: add token handler
+//put method isn't working successfully got false from if block
 handler._token.put = (requestProperties, callback) => {
   const id =
     typeof requestProperties.body.id === "string" &&
     requestProperties.body.id.trim().length === 20
       ? requestProperties.body.id
       : false;
+
   const extend =
     typeof requestProperties.body.extend === "boolean" &&
     requestProperties.body.extend === true
       ? true
       : false;
 
+  //got false from if block
   if (id && extend) {
     data.read("tokens", id, (err, tokenData) => {
       let tokenObject = parseJSON(tokenData);
@@ -140,6 +147,7 @@ handler._token.put = (requestProperties, callback) => {
 };
 
 //@TODO: add token handler
+//delete method isn't working successfully got false from if block
 handler._token.delete = (requestProperties, callback) => {
   // check the token if valid
   const id =
@@ -148,6 +156,7 @@ handler._token.delete = (requestProperties, callback) => {
       ? requestProperties.queryStringObject.id
       : false;
 
+  //got false from if block
   if (id) {
     //lookup the user
     data.read("tokens", id, (err, tokenData) => {
