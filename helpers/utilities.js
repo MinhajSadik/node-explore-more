@@ -10,7 +10,7 @@ const enviroments = require("./enviroment");
 // module scaffolding
 const utilities = {};
 
-//parse JSON string to object
+//parseJSON string to object
 utilities.parseJSON = (jsonString) => {
   let output;
   try {
@@ -21,7 +21,7 @@ utilities.parseJSON = (jsonString) => {
   return output;
 };
 
-//parse JSON string to object
+//hash password
 utilities.hash = (str) => {
   if (typeof str === "string" && str.length > 0) {
     let hash = crypto
@@ -29,6 +29,25 @@ utilities.hash = (str) => {
       .update(str)
       .digest("hex");
     return hash;
+  } else {
+    return false;
+  }
+};
+
+// create random string
+utilities.createRandomString = (strLength) => {
+  let length = strLength;
+  length = typeof strLength === "number" && strLength > 0 ? strLength : false;
+  if (length) {
+    let possibleCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let output = "";
+    for (let i = 0; i <= length; i += 1) {
+      let randomCharacter = possibleCharacters.charAt(
+        Math.floor(Math.random() * possibleCharacters.length)
+      );
+      output += randomCharacter;
+    }
+    return output;
   } else {
     return false;
   }

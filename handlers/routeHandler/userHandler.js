@@ -2,7 +2,7 @@
  * Title: User Handler
  * Description: Handler to handle user relelated routes
  * Author: Minhaj Sadik
- * Date: 12/04/2022
+ * Date: 24/04/2022
  */
 
 // Dependencies
