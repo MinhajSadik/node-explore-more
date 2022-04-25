@@ -16,9 +16,9 @@ const app = {};
 
 //testing file system
 // @TODO - remove this
-data.delete("test", "newFile", (err, data) => {
-  console.log(err, data);
-});
+// data.delete("test", "newFile", (err, data) => {
+//   console.log(err, data);
+// });
 
 // // config object
 // app.config = {
