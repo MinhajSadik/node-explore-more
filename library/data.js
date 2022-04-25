@@ -83,14 +83,14 @@ lib.update = (dir, file, data, callback) => {
   });
 };
 
-//delete file
+// delete existing file
 lib.delete = (dir, file, callback) => {
-  //unlink the file
-  fs.unlink(`${lib.baseDir}${dir}/${file}.json`, (err) => {
+  // unlink file
+  fs.unlink(`${lib.baseDir + dir}/${file}.json`, (err) => {
     if (!err) {
       callback(false);
     } else {
-      callback("Error deleting file");
+      callback(`Error deleting file`);
     }
   });
 };
