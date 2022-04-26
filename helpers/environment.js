@@ -12,12 +12,14 @@ envirotments.staging = {
   httpPort: 3000,
   envName: "staging",
   secretKey: "sadlfjlsadfjlkjlaskdf",
+  maxChecks: 5,
 };
 
 envirotments.production = {
   httpPort: 3001,
   envName: "production",
   secretKey: "ewrsadfklasdfjlkjasdfljasdf",
+  maxChecks: 5,
 };
 
 //deternmine which enviroment was passed as a command line argument

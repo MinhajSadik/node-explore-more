@@ -5,7 +5,7 @@
 
 // Dependencies
 const crypto = require("crypto");
-const enviroments = require("./enviroment");
+const enviroments = require("./environment");
 
 // module scaffolding
 const utilities = {};
