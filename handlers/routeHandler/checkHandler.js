@@ -235,7 +235,7 @@ handler._check.put = (requestProperties, callback) => {
   if (id) {
     if (protocol || url || method || successCodes || timeoutSeconds) {
       data.read("checks", id, (err, checkData) => {
-        if (err && checkData) {
+        if (!err && checkData) {
           const checkObject = parseJSON(checkData);
           const token =
             typeof requestProperties.headersObject.token === "string"
@@ -262,6 +262,16 @@ handler._check.put = (requestProperties, callback) => {
                 if (timeoutSeconds) {
                   checkObject.timeoutSeconds = timeoutSeconds;
                 }
+                //store the checkObject
+                data.update("checks", id, checkObject, (err) => {
+                  if (!err) {
+                    callback(200);
+                  } else {
+                    callback(500, {
+                      error: "Could not update the check",
+                    });
+                  }
+                });
               } else {
                 callback(403, {
                   message: "The provided token is invalid",
