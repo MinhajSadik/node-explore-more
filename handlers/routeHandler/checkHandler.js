@@ -194,7 +194,98 @@ handler._check.get = (requestProperties, callback) => {
   }
 };
 
-handler._check.put = (requestProperties, callback) => {};
+handler._check.put = (requestProperties, callback) => {
+  const id =
+    typeof requestProperties.queryStringObject.id === "string" &&
+    requestProperties.queryStringObject.id.trim().length === 20
+      ? requestProperties.queryStringObject.id
+      : false;
+
+  let protocol =
+    typeof requestProperties.body.protocol === "string" &&
+    ["http", "https"].indexOf(requestProperties.body.protocol) > -1
+      ? requestProperties.body.protocol
+      : false;
+  let url =
+    typeof requestProperties.body.url === "string" &&
+    requestProperties.body.url.trim().length > 0
+      ? requestProperties.body.url
+      : false;
+
+  let method =
+    typeof requestProperties.body.method === "string" &&
+    ["GET", "POST", "PUT", "DELETE"].indexOf(requestProperties.body.method) > -1
+      ? requestProperties.body.method
+      : false;
+
+  let successCodes =
+    typeof requestProperties.body.successCodes === "object" &&
+    requestProperties.body.successCodes instanceof Array
+      ? requestProperties.body.successCodes
+      : false;
+
+  let timeoutSeconds =
+    typeof requestProperties.body.timeoutSeconds === "number" &&
+    requestProperties.body.timeoutSeconds % 1 === 0 &&
+    requestProperties.body.timeoutSeconds >= 1 &&
+    requestProperties.body.timeoutSeconds <= 5
+      ? requestProperties.body.timeoutSeconds
+      : false;
+
+  if (id) {
+    if (protocol || url || method || successCodes || timeoutSeconds) {
+      data.read("checks", id, (err, checkData) => {
+        if (err && checkData) {
+          const checkObject = parseJSON(checkData);
+          const token =
+            typeof requestProperties.headersObject.token === "string"
+              ? requestProperties.headersObject.token
+              : false;
+
+          tokenHandler._token.verifyToken(
+            token,
+            checkObject.userPhone,
+            (tokenIsValid) => {
+              if (tokenIsValid) {
+                if (protocol) {
+                  checkObject.protocol = protocol;
+                }
+                if (url) {
+                  checkObject.url = url;
+                }
+                if (method) {
+                  checkObject.method = method;
+                }
+                if (successCodes) {
+                  checkObject.successCodes = successCodes;
+                }
+                if (timeoutSeconds) {
+                  checkObject.timeoutSeconds = timeoutSeconds;
+                }
+              } else {
+                callback(403, {
+                  message: "The provided token is invalid",
+                });
+              }
+            }
+          );
+        } else {
+          callback(500, {
+            message: "the check with the specified id does not exist",
+          });
+        }
+      });
+    } else {
+      callback(400, {
+        error: "you've the problem in your request",
+      });
+    }
+  } else {
+    callback(400, {
+      error: "Missing required field",
+    });
+  }
+};
 
 //@TODO: authentication
 handler._check.delete = (requestProperties, callback) => {};
