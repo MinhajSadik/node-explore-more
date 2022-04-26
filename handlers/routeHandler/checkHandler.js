@@ -154,7 +154,45 @@ handler._check.post = (requestProperties, callback) => {
   }
 };
 
-handler._check.get = (requestProperties, callback) => {};
+handler._check.get = (requestProperties, callback) => {
+  const id =
+    typeof requestProperties.queryStringObject.id === "string" &&
+    requestProperties.queryStringObject.id.trim().length === 20
+      ? requestProperties.queryStringObject.id
+      : false;
+
+  if (id) {
+    data.read("checks", id, (err, checkData) => {
+      if (!err && checkData) {
+        let token =
+          typeof requestProperties.headersObject.token === "string"
+            ? requestProperties.headersObject.token
+            : false;
+        tokenHandler._token.verifyToken(
+          token,
+          parseJSON(checkData).userPhone,
+          (tokenIsValid) => {
+            if (tokenIsValid) {
+              callback(200, parseJSON(checkData));
+            } else {
+              callback(403, {
+                message: "The provided token is invalid",
+              });
+            }
+          }
+        );
+      } else {
+        callback(500, {
+          error: "Could not fetch the check data",
+        });
+      }
+    });
+  } else {
+    callback(400, {
+      error: "you've the problem in your request",
+    });
+  }
+};
 
 handler._check.put = (requestProperties, callback) => {};
 
