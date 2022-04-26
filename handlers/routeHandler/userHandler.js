@@ -9,7 +9,7 @@
 const data = require("../../library/data");
 const { hash } = require("../../helpers/utilities");
 const { parseJSON } = require("../../helpers/utilities");
-
+const tokenHandler = require("./tokenHandler");
 //module scaffolding
 const handler = {};
 
@@ -93,7 +93,6 @@ handler._users.post = (requestProperties, callback) => {
   }
 };
 
-//@TODO: authentication
 handler._users.get = (requestProperties, callback) => {
   //check the phone number is valid
   const phone =
@@ -103,6 +102,32 @@ handler._users.get = (requestProperties, callback) => {
       : false;
 
   if (phone) {
+    //verify token
+    let token =
+      typeof requestProperties.headersObject.token === "string"
+        ? requestProperties.headersObject.token
+        : false;
+
+    tokenHandler._token.verifyToken(token, phone, (tokenIsValid) => {
+      if (tokenIsValid) {
+        //lookup the user
+        data.read("users", phone, (err, u) => {
+          const user = { ...parseJSON(u) };
+          if (!err && user) {
+            delete user.password;
+            callback(200, user);
+          } else {
+            callback(404, {
+              error: "user not found",
+            });
+          }
+        });
+      } else {
+        callback(403, {
+          error: "you are not authorized to access this route",
+        });
+      }
+    });
     //lookup the user
     data.read("users", phone, (err, u) => {
       const user = { ...parseJSON(u) };
@@ -122,8 +147,8 @@ handler._users.get = (requestProperties, callback) => {
   }
 };
 
-//@TODO: authentication
 handler._users.put = (requestProperties, callback) => {
+  // check the phone number if valid
   const phone =
     typeof requestProperties.body.phone === "string" &&
     requestProperties.body.phone.trim().length === 11
@@ -150,45 +175,61 @@ handler._users.put = (requestProperties, callback) => {
 
   if (phone) {
     if (firstName || lastName || password) {
-      //lookup the user
-      data.read("users", phone, (err, uData) => {
-        const userData = { ...parseJSON(uData) };
-        if (!err && userData) {
-          if (firstName) {
-            userData.firstName = firstName;
-          }
-          if (lastName) {
-            userData.lastName = lastName;
-          }
-          if (password) {
-            userData.password = hash(password);
-          }
-          //store the user to database
-          data.update("users", phone, userData, (err) => {
-            if (!err) {
-              callback(200, {
-                message: "User updated successfully",
+      // verify token
+      const token =
+        typeof requestProperties.headersObject.token === "string"
+          ? requestProperties.headersObject.token
+          : false;
+
+      tokenHandler._token.verifyToken(token, phone, (tokenId) => {
+        if (tokenId) {
+          // loopkup the user
+          data.read("users", phone, (err, uData) => {
+            const userData = { ...parseJSON(uData) };
+
+            if (!err && userData) {
+              if (firstName) {
+                userData.firstName = firstName;
+              }
+              if (lastName) {
+                userData.firstName = firstName;
+              }
+              if (password) {
+                userData.password = hash(password);
+              }
+
+              // store to database
+              data.update("users", phone, userData, (err) => {
+                if (!err) {
+                  callback(200, {
+                    message: "User was updated successfully!",
+                  });
+                } else {
+                  callback(500, {
+                    error: "There was a problem in the server side!",
+                  });
+                }
               });
             } else {
-              callback(500, {
-                message: "Error couldn't update user",
+              callback(400, {
+                error: "You have a problem in your request!",
               });
             }
           });
         } else {
-          callback(404, {
-            error: "You've a problem",
+          callback(403, {
+            error: "Authentication failure!",
           });
         }
       });
     } else {
       callback(400, {
-        error: "you've a problem in your request",
+        error: "You have a problem in your request!",
       });
     }
   } else {
     callback(400, {
-      error: "invalid phone number, please try again",
+      error: "Invalid phone number. Please try again!",
     });
   }
 };
@@ -203,23 +244,36 @@ handler._users.delete = (requestProperties, callback) => {
       : false;
 
   if (phone) {
-    //lookup the user
-    data.read("users", phone, (err, userData) => {
-      if (!err && userData) {
-        data.delete("users", phone, (err) => {
-          if (!err) {
-            callback(200, {
-              message: "User deleted successfully",
+    let token =
+      typeof requestProperties.headersObject.token === "string"
+        ? requestProperties.headersObject.token
+        : false;
+
+    tokenHandler._token.verifyToken(token, phone, (tokenIsValid) => {
+      if (tokenIsValid) {
+        // lookup the user
+        data.read("users", phone, (err, userData) => {
+          if (!err && userData) {
+            data.delete("users", phone, (err) => {
+              if (!err) {
+                callback(200, {
+                  message: "User deleted successfully",
+                });
+              } else {
+                callback(500, {
+                  message: "Error couldn't delete user",
+                });
+              }
             });
           } else {
             callback(500, {
-              message: "Error couldn't delete user",
+              error: "there an server side error",
             });
           }
         });
       } else {
-        callback(500, {
-          error: "there an server side error",
+        callback(403, {
+          error: "you are not authorized to this oparation",
         });
       }
     });
