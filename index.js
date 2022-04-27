@@ -10,6 +10,7 @@ const http = require("http");
 const { handleReqRes } = require("./helpers/handleReqRes");
 const environments = require("./helpers/environment");
 const data = require("./library/data");
+const { sendTwilioSms } = require("./helpers/notifications");
 
 // app object - module scaffolding
 const app = {};
@@ -20,10 +21,15 @@ const app = {};
 //   console.log(err, data);
 // });
 
-// // config object
-// app.config = {
-//   PORT: process.env.PORT || 3000,
-// };
+//@TODO - remove this later
+sendTwilioSms("+8801781583107", "Hello World", (err, data) => {
+  console.log(err, data);
+});
+
+// config object
+app.config = {
+  PORT: process.env.PORT || 3000,
+};
 
 // handle request response
 app.handleReqRes = handleReqRes;
