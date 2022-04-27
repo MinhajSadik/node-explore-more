@@ -298,6 +298,90 @@ handler._check.put = (requestProperties, callback) => {
 };
 
 //@TODO: authentication
-handler._check.delete = (requestProperties, callback) => {};
+handler._check.delete = (requestProperties, callback) => {
+  const id =
+    typeof requestProperties.queryStringObject.id === "string" &&
+    requestProperties.queryStringObject.id.trim().length === 20
+      ? requestProperties.queryStringObject.id
+      : false;
+
+  if (id) {
+    data.read("checks", id, (err, checkData) => {
+      if (!err && checkData) {
+        let token =
+          typeof requestProperties.headersObject.token === "string"
+            ? requestProperties.headersObject.token
+            : false;
+        tokenHandler._token.verifyToken(
+          token,
+          parseJSON(checkData).userPhone,
+          (tokenIsValid) => {
+            if (tokenIsValid) {
+              //delete the checks data
+              data.delete("checks", id, (err) => {
+                if (!err) {
+                  data.read(
+                    "users",
+                    parseJSON(checkData).userPhone,
+                    (err, userData) => {
+                      if (!err && userData) {
+                        const userObject = parseJSON(userData);
+                        let userChecks =
+                          typeof userObject.checks === "object" &&
+                          userObject.checks instanceof Array
+                            ? userObject.checks
+                            : [];
+                        //remove the deleted check id from users list of checks
+                        let checkPosition = userChecks.indexOf(id);
+                        if (checkPosition > -1) {
+                          userChecks.splice(checkPosition, 1);
+                          //store the userObject
+                          data.update(
+                            "users",
+                            userObject.userPhone,
+                            userObject,
+                            (err) => {
+                              if (!err) {
+                                callback(200);
+                              } else {
+                                callback(500, {
+                                  error: "Could not update the user",
+                                });
+                              }
+                            }
+                          );
+                        }
+                      } else {
+                        callback(500, {
+                          error: "Could not delete the check",
+                        });
+                      }
+                    }
+                  );
+                } else {
+                  callback(500, {
+                    error: "Could not delete the check",
+                  });
+                }
+              });
+            } else {
+              callback(403, {
+                message: "The provided token is invalid",
+              });
+            }
+          }
+        );
+      } else {
+        callback(500, {
+          error: "Could not fetch the check data",
+        });
+      }
+    });
+  } else {
+    callback(400, {
+      error: "you've the problem in your request",
+    });
+  }
+};
 
 module.exports = handler;
