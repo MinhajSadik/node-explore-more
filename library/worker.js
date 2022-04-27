@@ -7,7 +7,7 @@
 
 // Dependencies
 const data = require("./data");
-const { parsedJSON } = require("../helpers/utilities");
+const { parseJSON } = require("../helpers/utilities");
 
 // worker object - module scaffolding
 const worker = {};
@@ -22,7 +22,7 @@ worker.getherAllChecks = () => {
         data.read("checks", check, (err, originalCheckData) => {
           if (!err && originalCheckData) {
             // pass the check data to the checker
-            worker.validateCheckData(parsedJSON(originalCheckData));
+            worker.validateCheckData(parseJSON(originalCheckData));
           } else {
             console.log("Error reading one of the checks");
           }
@@ -36,24 +36,29 @@ worker.getherAllChecks = () => {
 
 //validate individual check data
 worker.validateCheckData = (originalCheckData) => {
+  let originalData = originalCheckData;
   if (originalCheckData && originalCheckData.id) {
-    originalCheckData.state =
+    originalData.state =
       typeof originalCheckData.state == "string" &&
       ["up", "down"].indexOf(originalCheckData.state) > -1
         ? originalCheckData.state
         : "down";
 
-    originalCheckData.lastChecked =
+    originalData.lastChecked =
       typeof originalCheckData.lastChecked == "number" &&
       originalCheckData.lastChecked > 0
         ? originalCheckData.lastChecked
         : 0;
 
     // pass to the next process
-    worker.performCheck(originalCheckData);
+    worker.performCheck(originalData);
   } else {
     console.log("Error: check was invalid and not properly formatted");
   }
+};
+
+worker.performCheck = (originalCheckData) => {
+    
 };
 
 // timer to execute the workers process once every minute

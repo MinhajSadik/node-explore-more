@@ -27,7 +27,7 @@ server.createServer = () => {
   const createServerVariable = http.createServer(server.handleReqRes);
   createServerVariable.listen(server.config.PORT, () => {
     // console.log(`envirotment: ${process.env.NODE_ENV}`);
-    console.log(`Listening Server On PORT ${server.config.PORT}`);
+    console.log(`Server Listening On PORT ${server.config.PORT}`);
   });
 };
 
