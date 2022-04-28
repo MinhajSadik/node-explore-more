@@ -6,6 +6,7 @@
  */
 
 // Dependencies
+const url = require("url");
 const data = require("./data");
 const { parseJSON } = require("../helpers/utilities");
 
@@ -36,7 +37,7 @@ worker.getherAllChecks = () => {
 
 //validate individual check data
 worker.validateCheckData = (originalCheckData) => {
-  let originalData = originalCheckData;
+  const originalData = originalCheckData;
   if (originalCheckData && originalCheckData.id) {
     originalData.state =
       typeof originalCheckData.state == "string" &&
@@ -58,7 +59,16 @@ worker.validateCheckData = (originalCheckData) => {
 };
 
 worker.performCheck = (originalCheckData) => {
-    
+  // parse the hostname & full url from original data
+  const parsedUrl = url.parse(
+    `${originalCheckData.protocol}:// ${originalCheckData.url}`,
+    true
+  );
+  const hostName = parsedUrl.hostname;
+  //path gives full url with queryString and pathname gives without queryString
+  const path = parsedUrl.path;
+
+  // construct the request
 };
 
 // timer to execute the workers process once every minute
