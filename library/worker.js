@@ -58,18 +58,18 @@ worker.validateCheckData = (originalCheckData) => {
   }
 };
 
-worker.performCheck = (originalCheckData) => {
-  // parse the hostname & full url from original data
-  const parsedUrl = url.parse(
-    `${originalCheckData.protocol}:// ${originalCheckData.url}`,
-    true
-  );
-  const hostName = parsedUrl.hostname;
-  //path gives full url with queryString and pathname gives without queryString
-  const path = parsedUrl.path;
+// worker.performCheck = (originalCheckData) => {
+//   // parse the hostname & full url from original data
+//   const parsedUrl = url.parse(
+//     `${originalCheckData.protocol}:// ${originalCheckData.url}`,
+//     true
+//   );
+//   const hostName = parsedUrl.hostname;
+//   //path gives full url with queryString and pathname gives without queryString
+//   const path = parsedUrl.path;
 
-  // construct the request
-};
+//   // construct the request
+// };
 
 // timer to execute the workers process once every minute
 worker.loop = () => {
