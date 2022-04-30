@@ -1,6 +1,9 @@
 const express = require("express");
+const { handler } = require("./helpers");
 
+// Create an express app
 const app = express();
+app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
