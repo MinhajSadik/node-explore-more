@@ -14,7 +14,11 @@ app.use(
     index: "home.html",
   })
 );
-const router = app.use(express.Router());
+const router = app.use(
+  express.Router({
+    caseSensitive: true,
+  })
+);
 
 router.get("/", (req, res) => {
   res.send("This is home pages!");
@@ -25,6 +29,7 @@ router.post("/", (req, res) => {
   res.send("This Is Home Page with Post Request");
 });
 
+//listener: app listen from this line
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
