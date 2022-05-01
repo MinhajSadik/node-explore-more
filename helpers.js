@@ -1,5 +1,6 @@
 exports.handler = (req, res) => {
-  console.log(admin.mountpath);
+  console.log(req.route);
+  console.log(req.baseUrl);
   res.send("welcome to admin dashboard!");
 };
 
