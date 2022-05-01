@@ -31,7 +31,7 @@ const router = app.use(
 
 app.use("/admin", admin);
 
-admin.get("/dashboard", handler);
+admin.get("/dashboard/:id", handler);
 
 router.all("/", routerAll);
 

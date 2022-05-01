@@ -1,6 +1,7 @@
 exports.handler = (req, res) => {
-  console.log(req.route);
-  console.log(req.baseUrl);
+  // console.log(req.route);
+  // console.log(req.baseUrl);
+  console.log(req.params.id);
   res.send("welcome to admin dashboard!");
 };
 
