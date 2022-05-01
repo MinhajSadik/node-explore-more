@@ -61,9 +61,19 @@ router.get("/about/mission/:id", (req, res) => {
 router
   .route("/about/mission")
   .get((req, res) => {
+    console.log("headerSent:", res.headersSent);
     console.log(req.cookies);
     console.log(req.body);
-    res.render("pages/about");
+    res.render("pages/about", {
+      title: "About",
+    });
+    console.log("headerSent:", res.headersSent);
+    // res.send("about page");
+    // res.json({ message: "about page" });
+    // res.end();
+    //status: isn't close the response you've to use res.end for ending the response
+    // res.status(200);
+    // res.sendStatus(200); // Quite the opposite from status
   })
   .post((req, res) => {
     res.send("About Mission Post");
