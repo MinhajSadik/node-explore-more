@@ -64,9 +64,10 @@ router
     console.log("headerSent:", res.headersSent);
     console.log(req.cookies);
     console.log(req.body);
-    res.render("pages/about", {
-      title: "About",
-    });
+    // res.render("pages/about", {
+    //   title: "About",
+    // });
+
     console.log("headerSent:", res.headersSent);
     // res.send("about page");
     // res.json({ message: "about page" });
@@ -74,6 +75,29 @@ router
     //status: isn't close the response you've to use res.end for ending the response
     // res.status(200);
     // res.sendStatus(200); // Quite the opposite from status
+
+    // res.format({
+    //   "text/plain": () => {
+    //     res.send("hey from plain text");
+    //   },
+    //   "text/html": () => {
+    //     res.render("pages/about", {
+    //       title: "Bangladeshi",
+    //     });
+    //   },
+    //   "application/json": () => {
+    //     res.json({ message: "hey from json" });
+    //   },
+    //   default: () => {
+    //     res.status(406).send("Not Acceptable");
+    //   },
+    // });
+    // res.cookie("names", "SharMinhaj");
+    // res.redirect("/home");
+    // res.location("/home");
+    res.set("names", "SharMinhaj");
+    res.get("names");
+    res.end();
   })
   .post((req, res) => {
     res.send("About Mission Post");
