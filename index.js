@@ -1,8 +1,10 @@
 const express = require("express");
-const { handler } = require("./helpers");
+const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 
 // Create an express app
 const app = express();
+//sub-app
+const admin = express();
 app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
 
@@ -22,15 +24,16 @@ const router = app.use(
     caseSensitive: true,
   })
 );
+app.use("/admin", admin);
+//sub-app route
+admin.get("/dashboard", handler);
 
-router.get("/", (req, res) => {
-  res.send("This is home pages!");
-});
+//using router
+router.all("/", routerAll);
 
-router.post("/", (req, res) => {
-  console.log(req.body.name);
-  res.send("This Is Home Page with Post Request");
-});
+router.get("/", routerGet);
+
+router.post("/", routerPost);
 
 //listener: app listen from this line
 app.listen(PORT, () => {
