@@ -51,7 +51,7 @@ router.get("/user/:id", (req, res) => {
 });
 
 router.get("/about/mission/:id", (req, res) => {
-  console.log("query:", req.query.name);
+  console.log("query:", req.query);
 });
 
 //route bundler
