@@ -8,6 +8,8 @@ const admin = express();
 app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
 
+app.set("view engine", "ejs");
+
 app.use(express.json());
 //raw: we'll get buffer binary data, we've to convert it to string and then to json
 // app.use(express.raw());
@@ -24,16 +26,42 @@ const router = app.use(
     caseSensitive: true,
   })
 );
+
 app.use("/admin", admin);
-//sub-app route
+
 admin.get("/dashboard", handler);
 
-//using router
 router.all("/", routerAll);
 
-router.get("/", routerGet);
+router.get("/home", routerGet);
 
-router.post("/", routerPost);
+router.post("/dashboard", routerPost);
+
+app.param("id", (req, res, next, id) => {
+  const user = {
+    userId: id,
+    name: "SharMinhaj",
+  };
+  req.userInfo = user;
+  next();
+});
+
+router.get("/user/:id", (req, res) => {
+  res.send(req.userInfo);
+  console.log("id", req.params.id);
+});
+
+router
+  .route("/about/mission")
+  .get((req, res) => {
+    res.render("pages/about");
+  })
+  .post((req, res) => {
+    res.send("About Mission Post");
+  })
+  .put((req, res) => {
+    res.send("About Mission Put");
+  });
 
 //listener: app listen from this line
 app.listen(PORT, () => {

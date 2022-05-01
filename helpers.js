@@ -5,7 +5,7 @@ exports.handler = (req, res) => {
 
 exports.routerPost = (req, res) => {
   console.log(req.body.name);
-  res.send("This Is Home Page with Post Request");
+  res.send("This Is Dashboard Page!");
 };
 
 exports.routerGet = (req, res) => {
