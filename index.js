@@ -5,10 +5,9 @@ const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 const app = express();
 //sub-app
 const admin = express();
+app.set("view engine", "ejs");
 app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
-
-app.set("view engine", "ejs");
 
 app.use(express.json());
 //raw: we'll get buffer binary data, we've to convert it to string and then to json
@@ -51,8 +50,13 @@ router.get("/user/:id", (req, res) => {
   console.log("id", req.params.id);
 });
 
+// router.get("/about/mission/:id", (req, res) => {
+//   console.log("id:", req.params.id);
+// });
+
+//route bundler
 router
-  .route("/about/mission")
+  .route("/about/mission/")
   .get((req, res) => {
     res.render("pages/about");
   })
