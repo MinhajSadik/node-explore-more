@@ -62,6 +62,7 @@ router
   .route("/about/mission")
   .get((req, res) => {
     console.log(req.cookies);
+    console.log(req.body);
     res.render("pages/about");
   })
   .post((req, res) => {
