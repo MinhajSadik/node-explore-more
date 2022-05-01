@@ -50,16 +50,16 @@ router.get("/user/:id", (req, res) => {
   console.log("id", req.params.id);
 });
 
-// router.get("/about/mission/:id", (req, res) => {
-//   console.log("id:", req.params.id);
-// });
+router.get("/about/mission/:id", (req, res) => {
+  console.log("query:", req.query.name);
+});
 
 //route bundler
 router
-  .route("/about/mission/")
-  .get((req, res) => {
-    res.render("pages/about");
-  })
+  .route("/about/mission")
+  // .get((req, res) => {
+  //   res.render("pages/about");
+  // })
   .post((req, res) => {
     res.send("About Mission Post");
   })
