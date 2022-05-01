@@ -1,5 +1,6 @@
 const express = require("express");
 const { handler, routerPost, routerGet, routerAll } = require("./helpers");
+const cookieParser = require("cookie-parser");
 
 // Create an express app
 const app = express();
@@ -10,6 +11,8 @@ app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cookieParser());
+
 //raw: we'll get buffer binary data, we've to convert it to string and then to json
 // app.use(express.raw());
 // app.use(express.text());
@@ -57,9 +60,10 @@ router.get("/about/mission/:id", (req, res) => {
 //route bundler
 router
   .route("/about/mission")
-  // .get((req, res) => {
-  //   res.render("pages/about");
-  // })
+  .get((req, res) => {
+    console.log(req.cookies);
+    res.render("pages/about");
+  })
   .post((req, res) => {
     res.send("About Mission Post");
   })
