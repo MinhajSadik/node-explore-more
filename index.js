@@ -15,20 +15,35 @@ const myMiddleware = (req, res, next) => {
   next();
 };
 
-const logger = (req, res, next) => {
-  console.log(
-    `${new Date(Date.now()).toLocaleString()} ${req.method} ${
-      req.originalUrl
-    } ${req.ip}`
-  );
-  // res.end(); // we can call res.end
-  // next("error"); // if we give value in next then it will assume as error
-  throw new Error("error");
-  // next();
+const loggerWrapper = (options) => {
+  return function (req, res, next) {
+    if (options.log) {
+      console.log(
+        `${new Date(Date.now()).toLocaleString()} ${req.method} ${
+          req.originalUrl
+        } ${req.ip}`
+      );
+      next();
+    } else {
+      throw new Error("log: failed to log");
+    }
+  };
 };
 
+// const logger = (req, res, next) => {
+//   console.log(
+//     `${new Date(Date.now()).toLocaleString()} ${req.method} ${
+//       req.originalUrl
+//     } ${req.ip}`
+//   );
+//   // res.end(); // we can call res.end
+//   // next("error"); // if we give value in next then it will assume as error
+//   // throw new Error("error");
+//   next();
+// };
+
 app.use(myMiddleware);
-adminRouter.use(logger);
+adminRouter.use(loggerWrapper({ log: true }));
 
 adminRouter.get("/dashboard", (req, res) => {
   // console.log(req.baseUrl);
