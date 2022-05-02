@@ -64,10 +64,9 @@ router
     console.log("headerSent:", res.headersSent);
     console.log(req.cookies);
     console.log(req.body);
-    // res.render("pages/about", {
-    //   title: "About",
-    // });
-
+    res.render("pages/about", {
+      title: "About",
+    });
     console.log("headerSent:", res.headersSent);
     // res.send("about page");
     // res.json({ message: "about page" });
@@ -95,9 +94,9 @@ router
     // res.cookie("names", "SharMinhaj");
     // res.redirect("/home");
     // res.location("/home");
-    res.set("names", "SharMinhaj");
-    res.get("names");
-    res.end();
+    // res.set("names", "SharMinhaj");
+    // res.get("names");
+    // res.end();
   })
   .post((req, res) => {
     res.send("About Mission Post");
