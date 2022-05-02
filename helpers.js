@@ -4,9 +4,17 @@ exports.handler = (req, res) => {
   // console.log(req.route);
   // console.log(req.baseUrl);
   // res.status(200).send("Admin dashboard");
-  res.sendStatus(200);
-  // res.send("welcome to admin dashboard!");
+  // res.sendStatus(200);
+  res.send("welcome to admin dashboard!");
   // res.json(name);
+  // res.cookie("cupple", "Sharminhaj", {
+  //   maxAge: 1000 * 60 * 60 * 24 * 7,
+  //   httpOnly: true,
+  // });
+  // res.redirect("/home");
+  // res.set("CuppleName", "Sharminhaj");
+  // res.get("CuppleName");
+  // res.end();
 };
 
 exports.routerPost = (req, res) => {
@@ -15,7 +23,7 @@ exports.routerPost = (req, res) => {
 };
 
 exports.routerGet = (req, res) => {
-  res.send("This is home pages!");
+  res.send("This is HOME pages!");
 };
 
 exports.routerAll = (req, res) => {
