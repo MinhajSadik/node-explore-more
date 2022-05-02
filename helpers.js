@@ -1,6 +1,6 @@
 exports.handler = (req, res) => {
   console.log(req.app.get("view engine"));
-  // console.log(req.route);
+  console.log(req.route);
   // console.log(req.baseUrl);
   res.send("welcome to admin dashboard!");
 };
