@@ -23,7 +23,8 @@ const logger = (req, res, next) => {
   );
   // res.end(); // we can call res.end
   // next("error"); // if we give value in next then it will assume as error
-  next();
+  throw new Error("error");
+  // next();
 };
 
 app.use(myMiddleware);
@@ -32,7 +33,7 @@ adminRouter.use(logger);
 adminRouter.get("/dashboard", (req, res) => {
   // console.log(req.baseUrl);
   // console.log(req.originalUrl);
-  res.send("Admin dashboard");
+  res.send("Admin dashboard in index.js");
 });
 
 app.set("view engine", "ejs");
@@ -133,6 +134,13 @@ router
   .put((req, res) => {
     res.send("About Mission Put");
   });
+
+const errorMiddleware = (err, req, res, next) => {
+  console.log("errorMiddleware");
+  next(err.message);
+};
+
+adminRouter.use(errorMiddleware);
 
 //listener: app listen from this line
 app.listen(PORT, () => {
