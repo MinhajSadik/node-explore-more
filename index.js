@@ -6,6 +6,15 @@ const cookieParser = require("cookie-parser");
 const app = express();
 //sub-app
 const admin = express();
+const adminRoute = express.Router();
+app.use("/admin", adminRoute);
+
+adminRoute.get("/dashboard", (req, res) => {
+  console.log(req.baseUrl);
+  console.log(req.originalUrl);
+  res.send("Admin dashboard");
+});
+
 app.set("view engine", "ejs");
 app.locals.title = "My App";
 const PORT = process.env.PORT || 3000;
