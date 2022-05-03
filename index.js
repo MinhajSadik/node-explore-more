@@ -1,12 +1,13 @@
 const express = require("express");
 const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 const cookieParser = require("cookie-parser");
+const adminRouter = require("./adminRouter");
 
 // Create an express app
 const app = express();
 //sub-app
 const admin = express();
-const adminRouter = express.Router();
+// const adminRouter = express.Router();
 
 app.use("/admin", adminRouter);
 
