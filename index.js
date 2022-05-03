@@ -1,14 +1,14 @@
 const express = require("express");
 const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 const cookieParser = require("cookie-parser");
-const adminRouter = require("./adminRouter");
+// const adminRouter = require("./adminRouter");
 const publicRouter = require("./publicRouter");
 
 // Create an express app
 const app = express();
 //sub-app
 const admin = express();
-// const adminRouter = express.Router();
+const adminRouter = express.Router();
 
 app.use("/admin", adminRouter);
 app.use("/public", publicRouter);
@@ -33,17 +33,17 @@ const loggerWrapper = (options) => {
   };
 };
 
-// const logger = (req, res, next) => {
-//   console.log(
-//     `${new Date(Date.now()).toLocaleString()} ${req.method} ${
-//       req.originalUrl
-//     } ${req.ip}`
-//   );
-//   // res.end(); // we can call res.end
-//   // next("error"); // if we give value in next then it will assume as error
-//   // throw new Error("error");
-//   next();
-// };
+const logger = (req, res, next) => {
+  console.log(
+    `${new Date(Date.now()).toLocaleString()} ${req.method} ${
+      req.originalUrl
+    } ${req.ip}`
+  );
+  // res.end(); // we can call res.end
+  // next("error"); // if we give value in next then it will assume as error
+  // throw new Error("error");
+  next();
+};
 
 app.use(myMiddleware);
 adminRouter.use(loggerWrapper({ log: true }));
