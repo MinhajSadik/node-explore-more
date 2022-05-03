@@ -2,20 +2,20 @@ const express = require("express");
 
 const publicRouter = express.Router();
 
-// publicRouter.param("user", (req, res, next, user) => {
-//   req.user = user === "1" ? "Admin" : "User";
-//   next();
-// });
-
-publicRouter.param((param, option) => (req, res, next, val) => {
-  if (val === option) {
-    next();
-  } else {
-    res.sendStatus(403);
-  }
+publicRouter.param("user", (req, res, next, user) => {
+  req.user = user === "1" ? "Admin" : "User";
+  next();
 });
 
-publicRouter.param("user", "1");
+// publicRouter.param((param, option) => (req, res, next, val) => {
+//   if (val === option) {
+//     next();
+//   } else {
+//     res.sendStatus(403);
+//   }
+// });
+
+// publicRouter.param("user", "1");
 
 publicRouter
   .route("/user")

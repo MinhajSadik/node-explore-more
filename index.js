@@ -81,7 +81,7 @@ app.use("/admin", admin);
 
 admin.get("/dashboard", handler);
 
-router.all("/", routerAll);
+// router.all("/", routerAll);
 
 router.get("/home", routerGet);
 
@@ -157,6 +157,34 @@ const errorMiddleware = (err, req, res, next) => {
   console.log("errorMiddleware");
   next(err.message);
 };
+app.get("/", (req, res, next) => {
+  for (let i = 0; i <= 10; i++) {
+    if (i === 5) {
+      // throw new Error("error");
+      next("there was an error");
+    } else {
+      res.write("SharMinhaj");
+    }
+  }
+  res.end();
+});
+
+app.use((req, res, next) => {
+  // res.status(404).send("Page not found");
+  next("requested url was not found");
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    next("there was an error");
+  } else {
+    if (err.message) {
+      res.status(500).send(err.message);
+    } else {
+      res.status(500).send(err.message);
+    }
+  }
+});
 
 adminRouter.use(errorMiddleware);
 
