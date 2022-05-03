@@ -2,6 +2,7 @@ const express = require("express");
 const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 const cookieParser = require("cookie-parser");
 const adminRouter = require("./adminRouter");
+const publicRouter = require("./publicRouter");
 
 // Create an express app
 const app = express();
@@ -10,6 +11,7 @@ const admin = express();
 // const adminRouter = express.Router();
 
 app.use("/admin", adminRouter);
+app.use("/public", publicRouter);
 
 const myMiddleware = (req, res, next) => {
   console.log("myMiddleware");
