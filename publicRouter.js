@@ -2,9 +2,17 @@ const express = require("express");
 
 const publicRouter = express.Router();
 
-publicRouter.param("user", (req, res, next, user) => {
-  req.user = user === "1" ? "Admin" : "User";
-  next();
+// publicRouter.param("user", (req, res, next, user) => {
+//   req.user = user === "1" ? "Admin" : "User";
+//   next();
+// });
+
+publicRouter.param((param, option) => (req, res, next, val) => {
+  if (val === option) {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 publicRouter.get("/:user", (req, res, next) => {
