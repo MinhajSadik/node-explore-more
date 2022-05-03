@@ -15,8 +15,27 @@ publicRouter.param((param, option) => (req, res, next, val) => {
   }
 });
 
+publicRouter.param("user", "1");
+
+publicRouter
+  .route("/user")
+  .all((req, res, next) => {
+    console.log(`i'm logging all requests`);
+    next();
+  })
+  .get((req, res) => {
+    res.send(`Hello`);
+  })
+  .post((req, res) => {
+    res.send(`Hello`);
+  })
+  .put((req, res) => {
+    res.send(`Hello`);
+  });
+
+//public router methods
 publicRouter.get("/:user", (req, res, next) => {
-  console.log(`Public page for ${req.user}`);
+  console.log(`Hello ${req.user}`);
   next();
 });
 
