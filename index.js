@@ -3,6 +3,7 @@ const { handler, routerPost, routerGet, routerAll } = require("./helpers");
 const cookieParser = require("cookie-parser");
 // const adminRouter = require("./adminRouter");
 const publicRouter = require("./publicRouter");
+const fs = require("fs");
 
 // Create an express app
 const app = express();
@@ -157,17 +158,50 @@ const errorMiddleware = (err, req, res, next) => {
   console.log("errorMiddleware");
   next(err.message);
 };
-app.get("/", (req, res, next) => {
-  for (let i = 0; i <= 10; i++) {
-    if (i === 5) {
-      // throw new Error("error");
-      next("there was an error");
-    } else {
-      res.write("SharMinhaj");
-    }
-  }
-  res.end();
-});
+
+app.get("/", [
+  (req, res, next) => {
+    fs.readFile("/file-does-not-exist", "utf-8", (err, data) => {
+      console.log(data);
+      next(err);
+    });
+  },
+  (req, res, next) => {
+    console.log(data.property);
+  },
+]);
+
+// app.get("/", (req, res, next) => {
+//   fs.readFile("/file-does not exist", "utf-8", (err, data) => {
+//     if (err) {
+//       next(err);
+//     } else {
+//       res.send(data);
+//     }
+//   });
+// });
+
+// app.get("/", (req, res, next) => {
+//   setTimeout(() => {
+//     try {
+//       console.log(a);
+//     } catch (err) {
+//       next(err);
+//     }
+//   }, 100);
+// });
+
+// app.get("/", (req, res, next) => {
+//   for (let i = 0; i <= 10; i++) {
+//     if (i === 5) {
+//       // throw new Error("error");
+//       next("there was an error");
+//     } else {
+//       res.write("SharMinhaj");
+//     }
+//   }
+//   res.end();
+// });
 
 app.use((req, res, next) => {
   // res.status(404).send("Page not found");
@@ -176,7 +210,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {
-    next("there was an error");
+    next("there was an error!");
   } else {
     if (err.message) {
       res.status(500).send(err.message);
