@@ -52,13 +52,36 @@ router.post("/all", async (req, res) => {
 
 //put todos
 router.put("/:id", (req, res) => {
-  Todo.updateOne(
+  // Todo.updateOne(
+  //   { _id: req.params.id },
+  //   {
+  //     $set: {
+  //       title: req.body.title,
+  //       status: req.body.status,
+  //     },
+  //   },
+  //   (err) => {
+  //     if (err) {
+  //       res.status(500).json({
+  //         error: err.message,
+  //       });
+  //     } else {
+  //       res.status(200).json({
+  //         message: "Todo was updated successfully",
+  //       });
+  //     }
+  //   }
+  // );
+  Todo.findByIdAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         title: req.body.title,
         status: req.body.status,
       },
+    },
+    {
+      new: true,
     },
     (err) => {
       if (err) {
