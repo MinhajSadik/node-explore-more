@@ -1,5 +1,6 @@
 const express = require("express");
 const mongooose = require("mongoose");
+const todoHandler = require("./routes/todoHandler");
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,8 @@ mongooose
 app.get("/", (req, res) => {
   res.send("Learning MongoDB Commands");
 });
+
+app.use("/todo", todoHandler);
 
 //default error handler
 const errorHandler = (err, req, res, next) => {
