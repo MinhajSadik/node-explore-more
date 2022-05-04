@@ -15,5 +15,3 @@ const todoSchema = mongoose.Schema({
     default: Date.now,
   },
 });
-
-
