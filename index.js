@@ -11,9 +11,12 @@ const options = {
   useUnifiedTopology: true,
 };
 mongooose
-  .connect("mongodb://localhost:27017/todos", options)
+  .connect("mongodb://127.0.0.1:27017/todos", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connected to Database..."))
-  .catch((err) => console.error("Could not connect to Ddatabase...", err));
+  .catch((err) => console.error("Couldn't connect to Ddatabase...", err));
 
 //application routes
 app.get("/", (req, res) => {
