@@ -28,7 +28,19 @@ router.post("/", async (req, res) => {
 });
 
 //post all todos
-router.post("/all", async (req, res) => {});
+router.post("/all", async (req, res) => {
+  await Todo.insertMany(req.body, (err) => {
+    if (err) {
+      res.status(500).json({
+        error: err,
+      });
+    } else {
+      res.status(200).json({
+        message: "Todos were inserted successfully",
+      });
+    }
+  });
+});
 
 //put todos
 router.put("/:id", async (req, res) => {});
