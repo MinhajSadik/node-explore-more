@@ -35,6 +35,13 @@ router.post("/js", async (req, res) => {
   });
 });
 
+//Get todos by language
+router.post("/language", async (req, res) => {
+  const data = await Todo.find().byLanguage('js')
+  res.status(200).json({
+    data,
+  });
+});
 
 
 //get all todos
