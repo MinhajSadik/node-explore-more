@@ -16,12 +16,20 @@ const todoSchema = mongoose.Schema({
   },
 });
 
+//instace methods
 todoSchema.methods = {
   findActive: function () {
     return mongoose.model("Todo").find({ status: "active" });
   },
   findActiveCallback: function (cb) {
     return mongoose.model("Todo").find({ status: "active" }, cb);
+  },
+};
+
+//static methods
+todoSchema.statics = {
+  findByJs: () => {
+    return this.find({ title: /js/i });
   },
 };
 

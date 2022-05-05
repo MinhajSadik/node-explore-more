@@ -27,6 +27,16 @@ router.post("/active-callbac", (req, res) => {
     }
 });
 
+//Get Active todos with callback
+router.post("/js", async (req, res) => {
+  const data = await Todo.findByJs();
+  res.status(200).json({
+    data,
+  });
+});
+
+
+
 //get all todos
 router.get("/", (req, res) => {
   // Todo.find({}, (err, todos) => {
