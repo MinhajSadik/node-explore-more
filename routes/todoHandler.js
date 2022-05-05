@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const checkLogin = require("../middlewares/checkLogin");
 const Todo = require("../schemas/todoSchema");
+const User = require("../schemas/userSchema");
 
 //Get Active todos with async
 router.get("/active", async (req, res) => {
@@ -134,7 +135,17 @@ router.post("/", checkLogin, async (req, res) => {
   });
 
   try {
-    await newTodo.save();
+    const todo = await newTodo.save();
+    await User.updateOne(
+      {
+        _id: req.user.userID,
+      },
+      {
+        $push: {
+          todos: todo._id,
+        },
+      }
+    );
     res.status(200).json({
       message: "Todo was inserted successfully",
     });
