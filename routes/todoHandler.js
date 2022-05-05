@@ -126,19 +126,22 @@ router.get("/:id", async (req, res) => {
 //   });
 
 //post a todos
-router.post("/", (req, res) => {
-  const newTodo = new Todo(req.body);
-  newTodo.save((err) => {
-    if (err) {
-      res.status(500).json({
-        error: err,
-      });
-    } else {
-      res.status(200).json({
-        message: "Todo was inserted successfully",
-      });
-    }
+router.post("/", checkLogin, async (req, res) => {
+  const newTodo = new Todo({
+    ...req.body,
+    user: req.user.userID,
   });
+
+  try {
+    await newTodo.save();
+    res.status(200).json({
+      message: "Todo was inserted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
 });
 
 //post all todos
