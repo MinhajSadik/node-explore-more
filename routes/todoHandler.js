@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const checkLogin = require("../middlewares/checkLogin");
 const Todo = require("../schemas/todoSchema");
 
 //Get Active todos with async
@@ -45,7 +46,7 @@ router.get("/language", async (req, res) => {
 });
 
 //get all todos
-router.get("/", (req, res) => {
+router.get("/", checkLogin, (req, res) => {
   // Todo.find({}, (err, todos) => {
   //   if (err) {
   //     res.status(500).json({

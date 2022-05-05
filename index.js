@@ -36,8 +36,10 @@ const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  res.status(500).json({ error: err.message });
+  res.status(500).json({ error: err });
 };
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

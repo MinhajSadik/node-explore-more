@@ -43,8 +43,6 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(
           {
             username: user[0].username,
-            name: user[0].name,
-            status: user[0].status,
             userID: user[0]._id,
           },
           process.env.JWT_SECRET,
@@ -53,7 +51,6 @@ router.post("/login", async (req, res) => {
         res.status(200).json({
           access_token: token,
           message: "Login was successfully",
-          data: user[0],
         });
       } else {
         res.status(401).json({
