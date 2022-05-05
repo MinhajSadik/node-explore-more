@@ -12,7 +12,6 @@ const checkLogin = (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
-
     next("Authentication failure");
   }
 };
