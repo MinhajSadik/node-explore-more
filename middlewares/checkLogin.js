@@ -11,6 +11,8 @@ const checkLogin = (req, res, next) => {
     // req.userID = userID;
     next();
   } catch (err) {
+    console.error(err);
+
     next("Authentication failure");
   }
 };
