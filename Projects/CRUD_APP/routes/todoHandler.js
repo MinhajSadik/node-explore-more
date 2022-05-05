@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const Todo = require("../schemas/todoSchema");
+const checkLogin = require("../middlewares/checkLogin");
+const Todo = require("../../../schemas/todoSchema");
+const User = require("../../../schemas/userSchema");
 
 //Get Active todos with async
-router.post("/active", async (req, res) => {
+router.get("/active", async (req, res) => {
   const todo = new Todo();
   const data = await todo.findActive();
   res.status(200).json({
@@ -13,7 +15,7 @@ router.post("/active", async (req, res) => {
 });
 
 //Get Active todos with callback
-router.post("/active-callbac", (req, res) => {
+router.get("/active-callback", (req, res) => {
   const todo = new Todo();
   todo.findActiveCallback((err, data) => {
     if (err) {
@@ -25,10 +27,11 @@ router.post("/active-callbac", (req, res) => {
         data,
       });
     }
+  });
 });
 
 //Get Active todos with callback
-router.post("/js", async (req, res) => {
+router.get("/js", async (req, res) => {
   const data = await Todo.findByJs();
   res.status(200).json({
     data,
@@ -36,16 +39,15 @@ router.post("/js", async (req, res) => {
 });
 
 //Get todos by language
-router.post("/language", async (req, res) => {
-  const data = await Todo.find().byLanguage('js')
+router.get("/language", async (req, res) => {
+  const data = await Todo.find().byLanguage("js");
   res.status(200).json({
     data,
   });
 });
 
-
 //get all todos
-router.get("/", (req, res) => {
+router.get("/", checkLogin, (req, res) => {
   // Todo.find({}, (err, todos) => {
   //   if (err) {
   //     res.status(500).json({
@@ -59,6 +61,7 @@ router.get("/", (req, res) => {
   //   }
   // });
   Todo.find({})
+    .populate("user", "name username -_id")
     .select({
       _id: 0,
       __v: 0,
@@ -125,19 +128,32 @@ router.get("/:id", async (req, res) => {
 //   });
 
 //post a todos
-router.post("/", (req, res) => {
-  const newTodo = new Todo(req.body);
-  newTodo.save((err) => {
-    if (err) {
-      res.status(500).json({
-        error: err,
-      });
-    } else {
-      res.status(200).json({
-        message: "Todo was inserted successfully",
-      });
-    }
+router.post("/", checkLogin, async (req, res) => {
+  const newTodo = new Todo({
+    ...req.body,
+    user: req.user.userID,
   });
+
+  try {
+    const todo = await newTodo.save();
+    await User.updateOne(
+      {
+        _id: req.user.userID,
+      },
+      {
+        $push: {
+          todos: todo._id,
+        },
+      }
+    );
+    res.status(200).json({
+      message: "Todo was inserted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
 });
 
 //post all todos
