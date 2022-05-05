@@ -60,6 +60,7 @@ router.get("/", checkLogin, (req, res) => {
   //   }
   // });
   Todo.find({})
+    .populate("user", "name username -_id")
     .select({
       _id: 0,
       __v: 0,
