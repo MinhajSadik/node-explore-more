@@ -1,6 +1,7 @@
 const express = require("express");
 const mongooose = require("mongoose");
 const todoHandler = require("./routes/todoHandler");
+const userHandler = require("./routes/userHandler");
 
 //app working start overhere
 const app = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/todo", todoHandler);
+app.use("/user", userHandler);
 
 //default error handler
 const errorHandler = (err, req, res, next) => {
