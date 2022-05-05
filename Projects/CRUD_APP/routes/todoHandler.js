@@ -3,6 +3,15 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Todo = require("../schemas/todoSchema");
 
+//Get Active todos
+router.post("/active", async (req, res) => {
+  const todo = new Todo();
+  const data = await todo.findActive();
+  res.status(200).json({
+    data,
+  });
+});
+
 //get all todos
 router.get("/", (req, res) => {
   // Todo.find({}, (err, todos) => {
@@ -100,8 +109,8 @@ router.post("/", (req, res) => {
 });
 
 //post all todos
-router.post("/all", async (req, res) => {
-  await Todo.insertMany(req.body, (err) => {
+router.post("/all", (req, res) => {
+  Todo.insertMany(req.body, (err) => {
     if (err) {
       res.status(500).json({
         error: err,
@@ -162,7 +171,7 @@ router.put("/:id", (req, res) => {
 });
 
 //get all todos
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
   Todo.deleteOne({ _id: req.params.id }, (err) => {
     if (err) {
       res.status(500).json({
