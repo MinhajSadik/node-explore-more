@@ -3,13 +3,28 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Todo = require("../schemas/todoSchema");
 
-//Get Active todos
+//Get Active todos with async
 router.post("/active", async (req, res) => {
   const todo = new Todo();
   const data = await todo.findActive();
   res.status(200).json({
     data,
   });
+});
+
+//Get Active todos with callback
+router.post("/active-callbac", (req, res) => {
+  const todo = new Todo();
+  todo.findActiveCallback((err, data) => {
+    if (err) {
+      res.status(500).json({
+        error: err,
+      });
+    } else {
+      res.status(200).json({
+        data,
+      });
+    }
 });
 
 //get all todos
